@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Server, Database, Cloud, Brain } from 'lucide-react';
+import { Brain } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import LaptopFrame from './LaptopFrame';
 import PhoneFrame from './PhoneFrame';
 
 const DeviceShowcase = () => {
-  const { theme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
