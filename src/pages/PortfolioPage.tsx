@@ -3,11 +3,13 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sun, Moon, Code, Database, Server, ExternalLink, Github, Linkedin, Twitter, ArrowRightCircle, Brain } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { usePortfolioData } from '../hooks/usePortfolioData';
+import { useLocation } from 'react-router-dom';
 import BackgroundAnimation from '../components/BackgroundAnimation';
 import Web3Animation from '../components/Web3Animation';
 import CodeAnimation from '../components/CodeAnimation';
 import DeviceShowcase from '../components/DeviceShowcase';
 import ProjectCard from '../components/ProjectCard';
+import ProjectModal from '../components/ProjectModal';
 import TestimonialCard from '../components/TestimonialCard';
 import TimelineSection from '../components/TimelineSection';
 import DeviceFrame from '../components/DeviceFrame';
@@ -17,7 +19,6 @@ import DataPipelineAnimation from '../components/DataPipelineAnimation';
 import DataEngineeringFlowchart from '../components/DataPipelineAnimation';
 
 const PortfolioPage: React.FC = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scheduledCall, setScheduledCall] = useState<{
@@ -37,6 +38,7 @@ const PortfolioPage: React.FC = () => {
   ) => {
     setScheduledCall({ date, time, details });
   };
+
   const { theme, toggleTheme } = useTheme();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { 
@@ -48,7 +50,6 @@ const PortfolioPage: React.FC = () => {
     error 
   } = usePortfolioData();
   
-  // Scroll progress for parallax effects
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ["start start", "end end"]
@@ -61,20 +62,36 @@ const PortfolioPage: React.FC = () => {
     setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
   };
 
-  // Auto transition between steps
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
-    }, 8000); // Change step every 8 seconds
-    
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
-  
-  // Parallax values
+
   const heroTextY = useTransform(scrollYProgress, [0, 0.1], [0, -50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  
-  // Loading state
+
+  const location = useLocation();
+  const isProjectModalRoute = location.pathname.startsWith('/project/');
+
+  useEffect(() => {
+    if (isProjectModalRoute) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isProjectModalRoute]);
+
+  useEffect(() => {
+    console.log('Current pathname:', location.pathname);
+    console.log('isProjectModalRoute:', isProjectModalRoute);
+    console.log('URL changed, should render modal:', isProjectModalRoute ? 'Yes' : 'No');
+  }, [location.pathname]);
+
   if (loading) {
     return (
       <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-950 text-white' : 'bg-gray-50 text-gray-900'} flex items-center justify-center`}>
@@ -85,8 +102,7 @@ const PortfolioPage: React.FC = () => {
       </div>
     );
   }
-  
-  // Error state
+
   if (error) {
     return (
       <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-950 text-white' : 'bg-gray-50 text-gray-900'} flex items-center justify-center`}>
@@ -118,8 +134,8 @@ const PortfolioPage: React.FC = () => {
         {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
       </button>
       
-            {/* Social links */}
-            <div className="fixed left-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+      {/* Social links */}
+      <div className="fixed left-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
         <a 
           href={profile?.github || "https://github.com"} 
           target="_blank" 
@@ -145,7 +161,6 @@ const PortfolioPage: React.FC = () => {
           className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
           aria-label="Upwork"
         >
-          {/* Custom Upwork Icon */}
           <svg 
             width="20" 
             height="20" 
@@ -225,7 +240,6 @@ const PortfolioPage: React.FC = () => {
           </motion.div>
         </motion.div>
         
-        {/* Scroll indicator */}
         <motion.div 
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
           initial={{ opacity: 0 }}
@@ -238,7 +252,7 @@ const PortfolioPage: React.FC = () => {
         </motion.div>
       </section>
       
-      {/* About Section with Code Animation */}
+      {/* About Section */}
       <section className="relative min-h-screen py-24 flex items-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -291,6 +305,7 @@ const PortfolioPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Data Engineering Section */}
       <section className="relative min-h-screen py-24 flex items-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -325,25 +340,25 @@ const PortfolioPage: React.FC = () => {
                 ))}
               </div>
             </motion.div>
-                <main className="container mx-auto px-4 py-8">
-                  <div className={`rounded-xl shadow-2xl overflow-hidden h-[400px] relative ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                  }`}>
-                    <DataEngineeringFlowchart currentStep={currentStep} />
-                    
-                    <button 
-                      onClick={handleNextStep}
-                      className={`absolute bottom-6 right-6 rounded-full p-3 shadow-lg transition-all flex items-center ${
-                        theme === 'dark'
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
-                    >
-                      <ArrowRightCircle className="w-6 h-6" />
-                      <span className="ml-2 mr-1">Next Step</span>
-                    </button>
-                  </div>
-                </main>
+            <main className="container mx-auto px-4 py-8">
+              <div className={`rounded-xl shadow-2xl overflow-hidden h-[400px] relative ${
+                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}>
+                <DataEngineeringFlowchart currentStep={currentStep} />
+                
+                <button 
+                  onClick={handleNextStep}
+                  className={`absolute bottom-6 right-6 rounded-full p-3 shadow-lg transition-all flex items-center ${
+                    theme === 'dark'
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
+                >
+                  <ArrowRightCircle className="w-6 h-6" />
+                  <span className="ml-2 mr-1">Next Step</span>
+                </button>
+              </div>
+            </main>
           </div>
         </div>
       </section>      
@@ -377,16 +392,20 @@ const PortfolioPage: React.FC = () => {
               Each project represents unique challenges and innovative solutions.
             </p>
           </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProjects.map((project) => (
+              console.log('Project:', project),
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>
+
+          {/* Conditionally render ProjectModal when on /project/:projectId */}
+          {isProjectModalRoute && <ProjectModal />}
           
           <div className="mt-16 flex justify-center">
             <motion.a 
-              href="#"
+              href="/projects"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-full text-gray-800 dark:text-gray-200 shadow-md hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -397,66 +416,67 @@ const PortfolioPage: React.FC = () => {
           </div>
         </div>
       </section>
+      
       {/* Data & AI Solutions Showcase */}
-    <section className="relative py-24 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="order-2 lg:order-1"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-6">
-              <Brain size={16} />
-              Data-Driven Innovation
-            </div>
+      <section className="relative py-24 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="order-2 lg:order-1"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-6">
+                <Brain size={16} />
+                Data-Driven Innovation
+              </div>
+              
+              <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                Scalable Data For Mobile Application
+              </h2>
+              
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                I architect high-performance data pipelines and AI-powered systems that scale seamlessly 
+                across platforms, delivering actionable insights for startups and enterprises.
+              </p>
+              
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+                From real-time analytics on mobile devices to cloud-native enterprise platforms, 
+                my solutions are built to handle big data and intelligent automation efficiently.
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mb-8">
+                {['Data Engineering', 'AI/ML', 'Cloud Architecture', 'Full-Stack', 'Scalability'].map((skill) => (
+                  <span 
+                    key={skill}
+                    className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
             
-            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-              Scalable Data For Mobile Application
-            </h2>
-            
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-              I architect high-performance data pipelines and AI-powered systems that scale seamlessly 
-              across platforms, delivering actionable insights for startups and enterprises.
-            </p>
-            
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-              From real-time analytics on mobile devices to cloud-native enterprise platforms, 
-              my solutions are built to handle big data and intelligent automation efficiently.
-            </p>
-            
-            <div className="flex flex-wrap gap-3 mb-8">
-              {['Data Engineering', 'AI/ML', 'Cloud Architecture', 'Full-Stack', 'Scalability'].map((skill) => (
-                <span 
-                  key={skill}
-                  className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.div
-            className="flex justify-center order-1 lg:order-2"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <DeviceFrame>
-              <img 
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" 
-                alt="Data Dashboard" 
-                className="w-full h-full object-cover"
-              />
-            </DeviceFrame>
-          </motion.div>
+            <motion.div
+              className="flex justify-center order-1 lg:order-2"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <DeviceFrame>
+                <img 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" 
+                  alt="Data Dashboard" 
+                  className="w-full h-full object-cover"
+                />
+              </DeviceFrame>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
       
       {/* Testimonials Section */}
       <section className="relative py-24">
@@ -497,17 +517,17 @@ const PortfolioPage: React.FC = () => {
       {/* Contact Section */}
       <section className="relative py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            >
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
               </svg>
               Get In Touch
             </div>
@@ -522,16 +542,16 @@ const PortfolioPage: React.FC = () => {
             
             <div className="flex flex-wrap justify-center gap-4">
               <motion.a 
-              href={`mailto:${profile?.email || 'contact@example.com'}`}
-              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+                href={`mailto:${profile?.email || 'contact@example.com'}`}
+                className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-              Email Me
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                Email Me
               </motion.a>
               <motion.button
                 onClick={() => setIsModalOpen(true)}
@@ -540,22 +560,22 @@ const PortfolioPage: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
                 Schedule a Call
               </motion.button>
 
               {scheduledCall && (
                 <div className={`mt-8 p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}>
-                <h3 className="text-lg font-medium mb-2">Your Scheduled Call</h3>
-                <p><strong>Date:</strong> {scheduledCall.date.toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {scheduledCall.time}</p>
-                <p><strong>Name:</strong> {scheduledCall.details.name}</p>
-                <p><strong>Email:</strong> {scheduledCall.details.email}</p>
-                <p><strong>Purpose:</strong> {scheduledCall.details.purpose}</p>
+                  <h3 className="text-lg font-medium mb-2">Your Scheduled Call</h3>
+                  <p><strong>Date:</strong> {scheduledCall.date.toLocaleDateString()}</p>
+                  <p><strong>Time:</strong> {scheduledCall.time}</p>
+                  <p><strong>Name:</strong> {scheduledCall.details.name}</p>
+                  <p><strong>Email:</strong> {scheduledCall.details.email}</p>
+                  <p><strong>Purpose:</strong> {scheduledCall.details.purpose}</p>
                 </div>
               )}
 
@@ -566,9 +586,10 @@ const PortfolioPage: React.FC = () => {
                 darkMode={theme === 'dark'}
               />
             </div>
-            </motion.div>
+          </motion.div>
         </div>
       </section>
+      
       <Footer />
     </div>
   );
