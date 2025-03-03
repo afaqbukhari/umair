@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sun, Moon, Code, Database, Server, ExternalLink, Github, Linkedin, Twitter, ArrowRightCircle } from 'lucide-react';
+import { Sun, Moon, Code, Database, Server, ExternalLink, Github, Linkedin, Twitter, ArrowRightCircle, Brain } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { usePortfolioData } from '../hooks/usePortfolioData';
 import BackgroundAnimation from '../components/BackgroundAnimation';
@@ -429,70 +429,66 @@ const PortfolioPage: React.FC = () => {
           </div>
         </div>
       </section>
-      
-      {/* Mobile App Showcase */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="order-2 lg:order-1"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                  <line x1="12" y1="18" x2="12" y2="18"/>
-                </svg>
-                Mobile Development
-              </div>
-              
-              <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-                Cross-Platform Excellence
-              </h2>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                I build responsive applications that work seamlessly across all devices, from desktop to mobile,
-                ensuring a consistent and optimized experience for all users.
-              </p>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-                Using modern frameworks like React Native and Flutter, I create native-like experiences
-                that maintain performance while sharing code across platforms.
-              </p>
-              
-              <div className="flex flex-wrap gap-3 mb-8">
-                {['React Native', 'Flutter', 'iOS', 'Android', 'Responsive Design'].map((skill) => (
-                  <span 
-                    key={skill}
-                    className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+      {/* Data & AI Solutions Showcase */}
+    <section className="relative py-24 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="order-2 lg:order-1"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-6">
+              <Brain size={16} />
+              Data-Driven Innovation
+            </div>
             
-            <motion.div
-              className="flex justify-center order-1 lg:order-2"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <DeviceFrame>
-                <img 
-                  src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Mobile App" 
-                  className="w-full h-full object-cover"
-                />
-              </DeviceFrame>
-            </motion.div>
-          </div>
+            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+              Scalable Data For Mobile Application
+            </h2>
+            
+            <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+              I architect high-performance data pipelines and AI-powered systems that scale seamlessly 
+              across platforms, delivering actionable insights for startups and enterprises.
+            </p>
+            
+            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+              From real-time analytics on mobile devices to cloud-native enterprise platforms, 
+              my solutions are built to handle big data and intelligent automation efficiently.
+            </p>
+            
+            <div className="flex flex-wrap gap-3 mb-8">
+              {['Data Engineering', 'AI/ML', 'Cloud Architecture', 'Full-Stack', 'Scalability'].map((skill) => (
+                <span 
+                  key={skill}
+                  className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+          
+          <motion.div
+            className="flex justify-center order-1 lg:order-2"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <DeviceFrame>
+              <img 
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" 
+                alt="Data Dashboard" 
+                className="w-full h-full object-cover"
+              />
+            </DeviceFrame>
+          </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
       
       {/* Testimonials Section */}
       <section className="relative py-24">

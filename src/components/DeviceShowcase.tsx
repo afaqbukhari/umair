@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Laptop, Smartphone, Monitor } from 'lucide-react';
+import { Server, Database, Cloud, Brain } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import LaptopFrame from './LaptopFrame';
 import PhoneFrame from './PhoneFrame';
@@ -9,39 +9,35 @@ const DeviceShowcase = () => {
   const { theme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
   
-  // Scroll progress for this section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
   
-  // Smooth scroll progress
   const smoothScrollProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
   
-  // Animation values
   const laptopY = useTransform(smoothScrollProgress, [0, 0.5, 1], [100, 0, -100]);
   const phoneY = useTransform(smoothScrollProgress, [0, 0.5, 1], [50, 0, -50]);
   const contentOpacity = useTransform(smoothScrollProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   const contentY = useTransform(smoothScrollProgress, [0, 0.2, 0.8, 1], [50, 0, 0, -50]);
   
-  // Device images
+  // Updated images with working URLs
   const laptopScreens = [
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop", // Data visualization
+   "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"  // Analytics dashboard
   ];
   
   const phoneScreens = [
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop", // Data visualization
+   "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"  // Analytics dashboard
   ];
   
-  // Current image index based on scroll
   const imageIndex = useTransform(smoothScrollProgress, [0.2, 0.5, 0.8], [0, 1, 2]);
   
   return (
@@ -59,16 +55,16 @@ const DeviceShowcase = () => {
           <motion.div 
             className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-4"
           >
-            <Monitor size={16} />
-            Responsive Applications
+            <Brain size={16} />
+            Data-Driven Innovation
           </motion.div>
           
           <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-            Cross-Platform Excellence
+            Scalable Data & AI Solutions
           </h2>
           <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-            I build applications that work seamlessly across all devices, from desktop to mobile,
-            ensuring a consistent and optimized experience for all users.
+            I design and build high-performance data pipelines, AI-powered applications, and full-stack systems 
+            that scale effortlessly—from startup MVPs to enterprise platforms.
           </p>
         </motion.div>
         
@@ -95,7 +91,7 @@ const DeviceShowcase = () => {
             <PhoneFrame currentImageIndex={imageIndex} images={phoneScreens} />
           </motion.div>
           
-          {/* Expanded content */}
+          {/* Expanded content (empty in your latest code, so I left it as is) */}
           <motion.div
             className="absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center pointer-events-none"
             style={{
@@ -104,29 +100,6 @@ const DeviceShowcase = () => {
               zIndex: useTransform(smoothScrollProgress, [0.3, 0.4, 0.6, 0.7], [5, 30, 30, 5])
             }}
           >
-            <motion.div
-              className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-xl shadow-2xl max-w-2xl border border-gray-200 dark:border-gray-800"
-              style={{
-                scale: useTransform(smoothScrollProgress, [0.3, 0.5, 0.7], [0.9, 1.05, 0.9]),
-              }}
-            >
-              <h3 className="text-2xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Seamless User Experience</h3>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                My applications are designed to provide a consistent and intuitive experience across all devices.
-                From responsive layouts to optimized performance, I ensure that users can access and enjoy your
-                application regardless of their device or screen size.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {['Responsive Design', 'Mobile-First', 'Cross-Browser', 'Performance Optimized'].map((feature, index) => (
-                  <span 
-                    key={feature}
-                    className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 rounded-full text-xs font-medium"
-                  >
-                    {feature}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
           </motion.div>
         </div>
         
