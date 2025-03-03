@@ -51,25 +51,6 @@ const Footer: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.div variants={itemVariants}>
-            <h4 className="text-lg font-semibold mb-4 text-indigo-600 dark:text-indigo-400">
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              {['Home', 'About', 'Projects', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
           {/* Social & Contact */}
           <motion.div variants={itemVariants}>
             <h4 className="text-lg font-semibold mb-4 text-indigo-600 dark:text-indigo-400">
@@ -131,9 +112,9 @@ const Footer: React.FC = () => {
         >
           <p>
             Built with{' '}
-            <span className="text-indigo-600 dark:text-indigo-400">React</span> &{' '}
+            <span className="text-indigo-600 dark:text-indigo-400">Nextjs</span> &{' '}
             <span className="text-indigo-600 dark:text-indigo-400">Framer Motion</span>
-            {' '}• Designed with passion
+            {' '}• Designed by <span className="text-indigo-600 dark:text-indigo-400">Umair Sajid</span>
           </p>
         </motion.div>
       </div>
