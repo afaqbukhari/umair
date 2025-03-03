@@ -346,39 +346,7 @@ const PortfolioPage: React.FC = () => {
                 </main>
           </div>
         </div>
-      </section>
-      
-      {/* Experience Timeline */}
-      <section className="relative py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100/80 dark:bg-indigo-900/30 backdrop-blur-sm text-indigo-800 dark:text-indigo-300 rounded-full text-sm font-medium mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              Professional Journey
-            </div>
-            
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-              Experience & Education
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-              My professional path has been focused on building expertise in full stack development and data engineering,
-              working with innovative companies and challenging projects.
-            </p>
-          </motion.div>
-          
-          <TimelineSection items={experience} />
-        </div>
-      </section>
-      
+      </section>      
       {/* Device Showcase */}
       <DeviceShowcase />
       
