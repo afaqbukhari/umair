@@ -3,3 +3,8 @@
 [[edge_functions]]
 function = "umair-logs"
 path = "/logs"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
