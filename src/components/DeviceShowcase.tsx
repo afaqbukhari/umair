@@ -31,13 +31,13 @@ const DeviceShowcase = () => {
   // Device images
   const laptopScreens = [
     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    "src/public/images/indrive-logo-brandlogos.net_wapq1qxz9.svg",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
   ];
   
   const phoneScreens = [
     "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
-    "src/public/images/indrive-logo-brandlogos.net_wapq1qxz9.svg",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
   ];
   
