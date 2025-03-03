@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface Project {
@@ -11,6 +11,9 @@ export interface Project {
   link: string;
   github: string;
   featured: boolean;
+  longDescription?: string;
+  features?: string[];
+  relatedProjects?: string[];
 }
 
 export interface Experience {
@@ -53,6 +56,8 @@ export interface PortfolioData {
   testimonials: Testimonial[];
   loading: boolean;
   error: string | null;
+  getProjectById: (id: number) => Project | undefined;
+  getRelatedProjects: (projectId: number) => Project[];
 }
 
 export const usePortfolioData = (): PortfolioData => {
@@ -74,8 +79,11 @@ export const usePortfolioData = (): PortfolioData => {
           .select('*')
           .single();
         
-        if (profileError) throw new Error(`Error fetching profile: ${profileError.message}`);
-        setProfile(profileData);
+        if (profileError) {
+          console.warn(`Error fetching profile: ${profileError.message}`);
+        } else {
+          setProfile(profileData);
+        }
         
         // Fetch projects
         const { data: projectsData, error: projectsError } = await supabase
@@ -83,8 +91,19 @@ export const usePortfolioData = (): PortfolioData => {
           .select('*')
           .order('sort_order', { ascending: true });
         
-        if (projectsError) throw new Error(`Error fetching projects: ${projectsError.message}`);
-        setProjects(projectsData);
+        if (projectsError) {
+          console.warn(`Error fetching projects: ${projectsError.message}`);
+        } else if (projectsData && projectsData.length > 0) {
+          setProjects(projectsData.map((project: any) => ({
+            ...project,
+            technologies: Array.isArray(project.technologies) ? project.technologies : 
+              (typeof project.technologies === 'string' ? JSON.parse(project.technologies) : []),
+            features: Array.isArray(project.features) ? project.features : 
+              (typeof project.features === 'string' ? JSON.parse(project.features) : undefined),
+            relatedProjects: Array.isArray(project.related_projects) ? project.related_projects : 
+              (typeof project.related_projects === 'string' ? JSON.parse(project.related_projects) : undefined)
+          })));
+        }
         
         // Fetch experience
         const { data: experienceData, error: experienceError } = await supabase
@@ -92,8 +111,15 @@ export const usePortfolioData = (): PortfolioData => {
           .select('*')
           .order('sort_order', { ascending: true });
         
-        if (experienceError) throw new Error(`Error fetching experience: ${experienceError.message}`);
-        setExperience(experienceData);
+        if (experienceError) {
+          console.warn(`Error fetching experience: ${experienceError.message}`);
+        } else {
+          setExperience(experienceData.map((exp: any) => ({
+            ...exp,
+            skills: Array.isArray(exp.skills) ? exp.skills : 
+              (typeof exp.skills === 'string' ? JSON.parse(exp.skills) : [])
+          })));
+        }
         
         // Fetch testimonials
         const { data: testimonialsData, error: testimonialsError } = await supabase
@@ -101,8 +127,11 @@ export const usePortfolioData = (): PortfolioData => {
           .select('*')
           .order('sort_order', { ascending: true });
         
-        if (testimonialsError) throw new Error(`Error fetching testimonials: ${testimonialsError.message}`);
-        setTestimonials(testimonialsData);
+        if (testimonialsError) {
+          console.warn(`Error fetching testimonials: ${testimonialsError.message}`);
+        } else {
+          setTestimonials(testimonialsData);
+        }
         
       } catch (err) {
         console.error('Error fetching portfolio data:', err);
@@ -115,8 +144,21 @@ export const usePortfolioData = (): PortfolioData => {
     fetchData();
   }, []);
   
-  // Filter featured projects
-  const featuredProjects = projects.filter(project => project.featured);
+  const featuredProjects = (projects ?? []).filter(project => project.featured);
+  
+  // Fix: Convert string id to number for comparison
+  const getProjectById = useCallback((id: number) => {
+    const project = (projects ?? []).find(project => project.id === id);
+    console.log('usePortfolioData - getProjectById:', id, 'Result:', project); // Debug log
+    return project;
+  }, [projects]);
+
+  const getRelatedProjects = useCallback((projectId: number) => {
+    const project = getProjectById(projectId);
+    if (!project || !project.relatedProjects) return [];
+    
+    return project.relatedProjects.map(id => getProjectById(Number(id))).filter(Boolean) as Project[];
+  }, [getProjectById]);
   
   return {
     profile,
@@ -125,6 +167,8 @@ export const usePortfolioData = (): PortfolioData => {
     experience,
     testimonials,
     loading,
-    error
+    error,
+    getProjectById,
+    getRelatedProjects
   };
-};
+}
