@@ -4,8 +4,6 @@ import { Sun, Moon, Code, Database, Server, ExternalLink, Github, Linkedin, Twit
 import { useTheme } from '../context/ThemeContext';
 import { usePortfolioData } from '../hooks/usePortfolioData';
 import { useLocation } from 'react-router-dom';
-import BackgroundAnimation from '../components/BackgroundAnimation';
-import Web3Animation from '../components/Web3Animation';
 import CodeAnimation from '../components/CodeAnimation';
 import DeviceShowcase from '../components/DeviceShowcase';
 import ProjectCard from '../components/ProjectCard';
@@ -15,12 +13,10 @@ import TimelineSection from '../components/TimelineSection';
 import DeviceFrame from '../components/DeviceFrame';
 import ScheduleCall from '../components/ScheduleCall';
 import Footer from '../components/Footer';
-import DataPipelineAnimation from '../components/DataPipelineAnimation';
 import DataEngineeringFlowchart from '../components/DataPipelineAnimation';
 
 const PortfolioPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [scheduledCall, setScheduledCall] = useState<{
     date: Date;
     time: string;
@@ -122,8 +118,6 @@ const PortfolioPage: React.FC = () => {
       ref={scrollRef}
       className={`min-h-screen ${theme === 'dark' ? 'bg-gray-950 text-white' : 'bg-gray-50 text-gray-900'} transition-colors duration-300`}
     >
-      {/* Background animations */}
-      {theme === 'dark' ? <Web3Animation /> : <BackgroundAnimation />}
       
       {/* Theme toggle */}
       <button 
