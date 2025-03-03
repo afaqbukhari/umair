@@ -2,4 +2,4 @@
 
 [[edge_functions]]
 function = "umair-logs"
-path = "/"
+path = "/logs"
