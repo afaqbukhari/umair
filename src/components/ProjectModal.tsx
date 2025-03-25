@@ -108,6 +108,7 @@ const ProjectModal: React.FC = () => {
               alt={project.title} 
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           </div>
           
           <div className="p-6 md:p-8">
