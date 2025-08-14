@@ -114,7 +114,6 @@ const Footer: React.FC = () => {
             Built with{' '}
             <span className="text-indigo-600 dark:text-indigo-400">Nextjs</span> &{' '}
             <span className="text-indigo-600 dark:text-indigo-400">Framer Motion</span>
-            {' '}• Designed by <span className="text-indigo-600 dark:text-indigo-400">Umair Sajid</span>
           </p>
         </motion.div>
       </div>
