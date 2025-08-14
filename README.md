@@ -1,4 +1,4 @@
-# Umair Sajid - Portfolio Website
+# Portfolio Website
 
 A modern, interactive portfolio website showcasing full-stack development and data engineering expertise. Built with React, TypeScript, and Tailwind CSS, featuring dynamic animations, code visualizations, and data pipeline demonstrations.
 
