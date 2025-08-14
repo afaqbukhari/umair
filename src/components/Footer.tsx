@@ -50,59 +50,6 @@ const Footer: React.FC = () => {
               © {new Date().getFullYear()} All rights reserved.
             </p>
           </motion.div>
-
-          {/* Social & Contact */}
-          <motion.div variants={itemVariants}>
-            <h4 className="text-lg font-semibold mb-4 text-indigo-600 dark:text-indigo-400">
-              Connect
-            </h4>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <motion.a
-                  href={profile?.github || "https://github.com"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 bg-white/10 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="GitHub"
-                >
-                  <Github size={20} />
-                </motion.a>
-                <motion.a
-                  href={profile?.linkedin || "https://linkedin.com"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 bg-white/10 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={20} />
-                </motion.a>
-                <motion.a
-                  href={profile?.upwork || "https://twitter.com"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 bg-white/10 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="Twitter"
-                >
-                  <Twitter size={20} />
-                </motion.a>
-              </div>
-              <motion.a
-                href={`mailto:${profile?.email || 'contact@example.com'}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Contact Me
-                <ExternalLink size={16} />
-              </motion.a>
-            </div>
-          </motion.div>
         </div>
 
         {/* Bottom Bar */}
