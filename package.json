@@ -1,8 +1,27 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "umair-portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "A modern, interactive portfolio website showcasing full-stack development and data engineering expertise",
+  "author": "Umair Sajid",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BinaryNavigator07/umair.git"
+  },
+  "homepage": "https://github.com/BinaryNavigator07/umair#readme",
+  "keywords": [
+    "portfolio",
+    "react",
+    "typescript",
+    "data-engineering",
+    "full-stack",
+    "vite",
+    "tailwindcss",
+    "framer-motion",
+    "supabase"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
